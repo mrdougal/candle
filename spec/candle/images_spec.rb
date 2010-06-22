@@ -4,7 +4,7 @@ describe Candle do
 
   describe "Images" do
 
-    describe "base attributes", :shared => true do
+    describe "common image attributes", :shared => true do
       
       it "should be an image" do
         @item.should be_image
@@ -17,6 +17,39 @@ describe Candle do
       it "should have a content type" do
         @item.content_type.should_not be_empty
       end
+      
+      it "should have a color space" do
+        @item.color_space.should_not be_empty
+      end
+      
+      it "should have an orientation" do
+        @item.orientation.should_not be_empty
+      end
+      
+      it "should mention pixel width" do
+        @item.pixel_width.should_not be_blank
+      end
+
+      it "should mention pixel height" do
+        @item.pixel_height.should_not be_blank
+      end
+
+      it "should mention bits per sample" do
+        @item.bits_per_sample.should_not be_blank
+      end
+      
+      it "should mention pixel count" do
+        @item.pixel_count.should_not be_blank
+      end
+      
+    end
+
+    describe "common adobe attributes", :shared => true do
+      
+      it "should mention a creator" do
+        @item.creator.should_not be_blank
+      end
+      
     end
 
     describe "jpg" do
@@ -29,7 +62,7 @@ describe Candle do
         @item = Candle.new(@file.path)
       end
       
-      it_should_behave_like 'base attributes'
+      it_should_behave_like 'common image attributes'
       
       describe "kind" do
         
@@ -67,7 +100,7 @@ describe Candle do
         @item = Candle.new(@file.path)
       end
       
-      it_should_behave_like 'base attributes'
+      it_should_behave_like 'common image attributes'
       
       describe "kind" do
         
@@ -105,7 +138,8 @@ describe Candle do
         @item = Candle.new(@file.path)
       end
       
-      it_should_behave_like 'base attributes'
+      it_should_behave_like 'common image attributes'
+      it_should_behave_like 'common adobe attributes'
       
       describe "kind" do
         
@@ -117,7 +151,7 @@ describe Candle do
           @item.kind.should =~ /photoshop/i
         end
       end
-
+      
       describe "content type" do
         
         it "should mention photoshop-image" do
@@ -131,14 +165,11 @@ describe Candle do
         end
       end
 
+      it "should mention alpha channel" do
+        @item.alpha_channel.should_not be_blank
+      end
     end
-    
-    
-    
-    
-    
 
-      
       
   end
 end
