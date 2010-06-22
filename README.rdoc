@@ -1,6 +1,13 @@
-= candle
+= Candle
 
-Description goes here.
+Using OS X spotlight to retrieve meta data.
+This is in development.
+
+item = Candle::Item.new('/path/to/file.jpg')
+
+item.get(:kMDItemKind)
+item.attribute_name
+
 
 == Note on Patches/Pull Requests
  
