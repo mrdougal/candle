@@ -3,12 +3,22 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 describe "Candle" do
   
   before(:each) do
-    @item = Candle::MDItemNative.new(__FILE__)
-    @filename = File.basename(__FILE__)
+    
+    file_path = File.expand_path(File.dirname(__FILE__) + '/fixtures/images/example.jpg')
+    
+    @file = File.open file_path
+    @item = Candle.new(@file.path)
+
   end
   
   it "should instanciate" do
     @item.should be_an_instance_of Candle::MDItemNative
+  end
+  
+  describe "attributes" do
+    it "should return a hash" do
+      @item.attributes.should respond_to(:keys)
+    end
   end
   
   describe "attribute names" do
@@ -20,11 +30,6 @@ describe "Candle" do
     it "should return an array" do
       @attributes.should respond_to(:size)
     end
-    
-    it "should include ItemKind" do
-      @attributes.should be_include('kMDItemContentTypeTree')
-    end
-    
   end
   
   
