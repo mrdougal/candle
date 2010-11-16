@@ -22,8 +22,7 @@ Jeweler::Tasks.new do |gem|
   gem.email = "hello@newfangled.com.au"
   gem.authors = ["Dougal MacPherson"]
 
-  # Development dependencies
-  gem.add_development_dependency "rspec", ">= 1.2.9"
+  # Development dependencies moved into Gemfile for management via bundler
   
 end
 Jeweler::GemcutterTasks.new
