@@ -1,6 +1,9 @@
 
 Trim of MD prefixes on all attributes returned from Spotlight.
-In general will be removing kMDItem
+In general will be removing kMDItem and FS.
+
+Most FS attributes will be stripped on upload. The only exception I assume is FSSize. 
+FSInvisible and FSHasCustomIcon won't be relevant when it comes to display on the website.
 
 kMDItemContentCreationDate => content_creation_date
 kMDItemContentTypeTree => content_type_tree
@@ -23,4 +26,25 @@ item.attributes => {
 	:creator => 'Adobe InDesign CS3 (5.0.4)',
 	:text_content => 'A newfangled day starts like any other, with a huge serve of battery hen eggs '
 }
+
+h2. Changing attributes names
+
+We will want to change the names of the attributes, so that they are more meaningful.
+Additionally so that they are ruby-like. (being underscore and separated by underscores)
+
+attribute_name.gsub('kMDItem','').gsub('FS','').underscore
+
+Will give us something like...
+kMDItemContentModificationDate => content_modification_date
+
+
+API
+
+asset = Asset.first # uploaded file
+asset.file # File information (Joint attachment proxy in our case)
+asset.file.metadata 'path/to/file'
+
+
+
+
 
