@@ -58,8 +58,8 @@ describe Candle do
 
         file_path = File.expand_path(File.dirname(__FILE__) + '/../fixtures/images/example.jpg')
 
-        @file = File.open file_path
-        @item = Candle.new(@file.path)
+        # @file = File.open file_path
+        @item = Candle::Spotlight.new(file_path)
       end
       
       it_should_behave_like 'common image attributes'
@@ -97,7 +97,7 @@ describe Candle do
         file_path = File.expand_path(File.dirname(__FILE__) + '/../fixtures/images/example.png')
 
         @file = File.open file_path
-        @item = Candle.new(@file.path)
+        @item = Candle::Spotlight.new(@file.path)
       end
       
       it_should_behave_like 'common image attributes'
@@ -135,7 +135,7 @@ describe Candle do
         file_path = File.expand_path(File.dirname(__FILE__) + '/../fixtures/images/example.psd')
 
         @file = File.open file_path
-        @item = Candle.new(@file.path)
+        @item = Candle::Spotlight.new(@file.path)
       end
       
       it_should_behave_like 'common image attributes'
