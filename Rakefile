@@ -1,36 +1,46 @@
 require 'rubygems'
-require 'rake'
-
+require 'bundler'
 begin
-  require 'jeweler'
-  Jeweler::Tasks.new do |gem|
-    gem.name = "candle"
-    gem.summary = %Q{Using OS X spotlight to retrieve file metadata}
-    gem.description = %Q{A simple gem to retrieve metadata on files via Spotlight on OS X. In development}
-    gem.email = "hello@newfangled.com.au"
-    gem.homepage = "http://github.com/dougalmacpherson/candle"
-    gem.authors = ["Dougal MacPherson"]
-    gem.add_development_dependency "rspec", ">= 1.2.9"
-    # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
-  end
-  Jeweler::GemcutterTasks.new
-rescue LoadError
-  puts "Jeweler (or a dependency) not available. Install it with: gem install jeweler"
+  Bundler.setup(:default, :development)
+rescue Bundler::BundlerError => e
+  $stderr.puts e.message
+  $stderr.puts "Run `bundle install` to install missing gems"
+  exit e.status_code
+end
+require 'rake'
+  
+require 'jeweler'
+Jeweler::Tasks.new do |gem|
+
+  # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
+  gem.name = "candle"
+  gem.homepage = "http://github.com/dougalmacpherson/candle"
+  gem.summary = %Q{Using OS X spotlight to retrieve file metadata}
+  gem.description = %Q{A simple gem to retrieve metadata on files via Spotlight on OS X. In development}
+  gem.license = "MIT"
+
+  gem.email = "hello@newfangled.com.au"
+  gem.authors = ["Dougal MacPherson"]
+
+  # Development dependencies
+  gem.add_development_dependency "rspec", ">= 1.2.9"
+  
+end
+Jeweler::GemcutterTasks.new
+
+
+# Testing via rspec
+require 'rspec/core'
+require 'rspec/core/rake_task'
+
+RSpec::Core::RakeTask.new(:spec) do |spec|
+  spec.pattern = FileList['spec/**/*_spec.rb']
 end
 
-require 'spec/rake/spectask'
-Spec::Rake::SpecTask.new(:spec) do |spec|
-  spec.libs << 'lib' << 'spec'
-  spec.spec_files = FileList['spec/**/*_spec.rb']
-end
-
-Spec::Rake::SpecTask.new(:rcov) do |spec|
-  spec.libs << 'lib' << 'spec'
+RSpec::Core::RakeTask.new(:rcov) do |spec|
   spec.pattern = 'spec/**/*_spec.rb'
   spec.rcov = true
 end
-
-task :spec => :check_dependencies
 
 task :default => :spec
 
