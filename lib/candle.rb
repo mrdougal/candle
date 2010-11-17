@@ -2,72 +2,39 @@
 
 module Candle
   
-
-  
   require 'candle/candle'
-  require 'candle/image'
-  
-  # So that we can call underscore
-  require 'active_support/inflector'
   
   class Base
 
-    # VERSION = '0.0.1'
-    
     attr_accessor :path
-    attr_accessor :metadata
     
+    
+    # Requires a path to passed in
+    # so we know what file to retrieve information from
     def initialize(path)
-      raise ArgumentError, 'Path is nil' if path.nil?
 
-      self.path = path
-      self.metadata = clean(raw_metadata)
+      raise ArgumentError, 'Path is nil' if path.nil?
+      @path = path
     end
     
-    def image?
-      metadata[:content_type_tree].member? 'public.image'
+    # Returns a hash of attributes from Spotlight
+    def metadata
+      @metadata ||= get_raw_metadata
     end
     
-    
-    def composite?
-      
-      puts metadata[:content_type_tree]
-      metadata[:content_type_tree].member? 'public.composite-content'
+    # Raise an exception if an attempt to write metadata was made
+    # as this isn't currently supported
+    def metadata=(*args)
+      raise "Writing metadata is not supported"
     end
-    
-    def bitmap?
-      !!metadata[:pixel_width]
-    end
-    
     
     private
     
-    
-    def raw_metadata
-      @raw_metadata ||= Intern.attributes self.path
+    # Does the 'actual' work and asks spotlight for the metadata
+    def get_raw_metadata
+      Spotlight.attributes @path
     end
 
-    # We want to change the names of the attributes, so that they are more meaningful.
-    # Additionally so that they are ruby-like. (being underscore and separated by underscores)
-    # 
-    # Will give us something like...
-    # kMDItemContentModificationDate => content_modification_date
-    # 
-    def clean(md)
-
-      out = {}
-      
-      md.each_pair do |key, value|
-        
-        new_key = key.gsub('kMDItem','').gsub('FS','').underscore
-        out[new_key.to_sym] = md[key]
-      end
-        
-      out
-      
-    end
-    
-    
   end
 
 end

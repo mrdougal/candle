@@ -176,9 +176,10 @@ void Init_candle (void) {
 	VALUE Candle = rb_define_module("Candle");
 	
 	// Define a nested class under the supplied class or module
-	VALUE CandleIntern = rb_define_module_under(Candle, "Intern");
+	// Which in this case is 'spotlight'
+	VALUE Spotlight = rb_define_module_under(Candle, "Spotlight");
 
 	// Defines a method in module
-	rb_define_module_function(CandleIntern, "attributes", method_attributes, 1);
+	rb_define_module_function(Spotlight, "attributes", method_attributes, 1);
 
 }
