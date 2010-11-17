@@ -1,9 +1,4 @@
 
-# Architecture
-ENV["ARCHFLAGS"]="-arch i386"
-
-
-
 require 'rubygems'
 require 'bundler'
 
