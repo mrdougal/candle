@@ -1,0 +1,89 @@
+h1. Candle
+
+2010-11-17
+
+Using OS X spotlight to retrieve meta data from files.
+
+This code is in development, and is very simple. You can only read from Spotlight, currently I don't have any plans to write back to Spotlight. Attempting to write to the attributes hash will raise an error. This is intentional, so if I do find myself trying to do this, I should implement the functionality.
+
+h2. Tested with
+
+Tested with Ruby 1.9.2
+I haven't tested it with older Ruby versions. 
+
+h2. Inspiration
+
+Most of the C code was extracted from http://github.com/xli/spotlight
+Unfortunately for me xli's gem doesn't compile in ruby 1.9.2
+One day i'll have some time to really figure out why
+
+My gem is very very simple, if you need to write back to spotlight then have a look at xli's gem
+
+
+h1. How to use
+
+item = Candle::Base.new('/path/to/file.jpg')
+item.metadata
+
+returns a hash of attributes (and that's about it)
+
+	kMDItemBitsPerSample           = 32
+	kMDItemColorSpace              = "RGB"
+	kMDItemContentCreationDate     = 2010-06-17 00:06:17 +1000
+	kMDItemContentModificationDate = 2010-06-17 00:06:17 +1000
+	kMDItemContentType             = "public.jpeg"
+	kMDItemContentTypeTree         = (
+	    "public.jpeg",
+	    "public.image",
+	    "public.data",
+	    "public.item",
+	    "public.content"
+	)
+	kMDItemCreator                 = "Adobe Photoshop CS4 Macintosh"
+	kMDItemDisplayName             = "example.jpg"
+	kMDItemFSContentChangeDate     = 2010-06-17 00:06:17 +1000
+	kMDItemFSCreationDate          = 2010-06-17 00:06:17 +1000
+	kMDItemFSCreatorCode           = ""
+	kMDItemFSFinderFlags           = 0
+	kMDItemFSHasCustomIcon         = 0
+	kMDItemFSInvisible             = 0
+	kMDItemFSIsExtensionHidden     = 0
+	kMDItemFSIsStationery          = 0
+	kMDItemFSLabel                 = 0
+	kMDItemFSName                  = "example.jpg"
+	kMDItemFSNodeCount             = 0
+	kMDItemFSOwnerGroupID          = 80
+	kMDItemFSOwnerUserID           = 501
+	kMDItemFSSize                  = 268346
+	kMDItemFSTypeCode              = ""
+	kMDItemHasAlphaChannel         = 0
+	kMDItemKind                    = "JPEG image"
+	kMDItemLastUsedDate            = 2010-06-17 00:06:17 +1000
+	kMDItemOrientation             = 1
+	kMDItemPixelCount              = 3852696
+	kMDItemPixelHeight             = 2103
+	kMDItemPixelWidth              = 1832
+	kMDItemProfileName             = "sRGB IEC61966-2.1"
+	kMDItemResolutionHeightDPI     = 300
+	kMDItemResolutionWidthDPI      = 300
+	kMDItemUsedDates               = (
+	    "2010-06-17 00:00:00 +1000"
+	)
+
+
+
+
+
+== Note on Patches/Pull Requests
+ 
+* Fork the project.
+* Make your feature addition or bug fix.
+* Add tests for it. This is important so I don't break it in a
+  future version unintentionally.
+* Commit, do not mess with rakefile, version, or history.
+  (if you want to have your own version, that is fine but bump version in a commit by itself I can ignore when I pull)
+* Send me a pull request. Bonus points for topic branches.
+
+== Copyright
+
+Copyright (c) 2010 Dougal MacPherson. See LICENSE for details.
