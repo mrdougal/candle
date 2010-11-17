@@ -37,7 +37,7 @@ module Candle
     
     # Does the 'actual' work and asks spotlight for the metadata
     def get_raw_metadata
-      Spotlight.attributes @path
+      Candle::Spotlight.attributes @path
     end
 
   end
