@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{candle}
-  s.version = "0.1.2"
+  s.version = "0.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Dougal MacPherson"]
@@ -32,6 +32,7 @@ Gem::Specification.new do |s|
     "ext/candle/candle.o",
     "ext/candle/extconf.rb",
     "lib/candle.rb",
+    "lib/candle/base.rb",
     "spec/candle_spec.rb",
     "spec/fixtures/.hidden/example.psd",
     "spec/fixtures/empty-file",
