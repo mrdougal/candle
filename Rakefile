@@ -37,7 +37,7 @@ end
 Jeweler::GemcutterTasks.new
 
 
-Rake::ExtensionTask.new('candle') do |ext|
+Rake::ExtensionTask.new('spotlight') do |ext|
   ext.lib_dir = 'lib/candle'
 end
 

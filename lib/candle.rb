@@ -3,6 +3,6 @@
 module Candle
   
   require 'candle/base'
-  require 'candle/candle' # c extension stuff
+  require 'candle/spotlight' # c extension stuff
   
 end
