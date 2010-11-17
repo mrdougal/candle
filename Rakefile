@@ -1,15 +1,27 @@
+
+# Architecture
+ENV["ARCHFLAGS"]="-arch i386"
+
+
+
 require 'rubygems'
 require 'bundler'
+
 begin
   Bundler.setup(:default, :development)
 rescue Bundler::BundlerError => e
+
   $stderr.puts e.message
   $stderr.puts "Run `bundle install` to install missing gems"
   exit e.status_code
+
 end
+
 require 'rake'
-  
+require 'rake/extensiontask'
 require 'jeweler'
+  
+
 Jeweler::Tasks.new do |gem|
 
   # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
@@ -22,10 +34,18 @@ Jeweler::Tasks.new do |gem|
   gem.email = "hello@newfangled.com.au"
   gem.authors = ["Dougal MacPherson"]
 
-  # Development dependencies moved into Gemfile for management via bundler
+  # Dependencies managemd via bundler
+  # see Gemfile for more information 
   
 end
+
 Jeweler::GemcutterTasks.new
+
+
+Rake::ExtensionTask.new('candle') do |ext|
+  ext.lib_dir = 'lib/candle'
+end
+
 
 
 # Testing via rspec
