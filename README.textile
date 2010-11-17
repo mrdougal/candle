@@ -4,7 +4,7 @@ h1. Candle
 
 Using OS X spotlight to retrieve meta data from files.
 
-This code is in development, and is very simple. You can only read from Spotlight, currently I don't have any plans to write back to Spotlight. Attempting to write to the attributes hash will raise an error. This is intentional, so if I do find myself trying to do this, I should implement the functionality.
+This code is in development, and is very simple. You can only read from Spotlight, currently I don't have any plans to write back to Spotlight. Attempting to write to the attributes hash will raise an error. This is intentional, so if I do find myself trying to do this, I should implement the functionality. If you need to write back to spotlight then have a look at "xli's gem":https://github.com/xli/spotlight (which this gem is based on)
 
 h2. Tested with
 
@@ -13,11 +13,9 @@ I haven't tested it with older Ruby versions.
 
 h2. Inspiration
 
-Most of the C code was extracted from http://github.com/xli/spotlight
+Most of the C code was extracted from "http://github.com/xli/spotlight":https://github.com/xli/spotlight
 Unfortunately for me xli's gem doesn't compile in ruby 1.9.2
-One day i'll have some time to really figure out why
-
-My gem is very very simple, if you need to write back to spotlight then have a look at xli's gem
+One day i'll figure out why and contribute a patch
 
 
 h1. How to use
@@ -27,6 +25,9 @@ item.metadata
 
 returns a hash of attributes (and that's about it)
 
+
+<pre>
+	
 	kMDItemBitsPerSample           = 32
 	kMDItemColorSpace              = "RGB"
 	kMDItemContentCreationDate     = 2010-06-17 00:06:17 +1000
@@ -69,12 +70,14 @@ returns a hash of attributes (and that's about it)
 	kMDItemUsedDates               = (
 	    "2010-06-17 00:00:00 +1000"
 	)
+	
+</pre>
 
 
 
 
 
-== Note on Patches/Pull Requests
+h2. Note on Patches/Pull Requests
  
 * Fork the project.
 * Make your feature addition or bug fix.
@@ -84,6 +87,6 @@ returns a hash of attributes (and that's about it)
   (if you want to have your own version, that is fine but bump version in a commit by itself I can ignore when I pull)
 * Send me a pull request. Bonus points for topic branches.
 
-== Copyright
+h4. Copyright
 
-Copyright (c) 2010 Dougal MacPherson. See LICENSE for details.
+Copyright (c) 2010 Dougal MacPherson. See "License":License.txt for details.
