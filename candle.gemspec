@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{candle}
-  s.version = "0.1.0"
+  s.version = "0.1.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Dougal MacPherson"]
@@ -15,13 +15,15 @@ Gem::Specification.new do |s|
   s.extensions = ["ext/candle/extconf.rb"]
   s.extra_rdoc_files = [
     "LICENSE.txt",
-    "README.rdoc"
+    "README.textile"
   ]
   s.files = [
     ".document",
     ".rspec",
+    "Gemfile",
+    "Gemfile.lock",
     "LICENSE.txt",
-    "README.rdoc",
+    "README.textile",
     "Rakefile",
     "TODO.textile",
     "VERSION",
@@ -30,18 +32,17 @@ Gem::Specification.new do |s|
     "ext/candle/candle.o",
     "ext/candle/extconf.rb",
     "lib/candle.rb",
-    "lib/candle/image.rb",
-    "spec/candle/images_spec.rb",
     "spec/candle_spec.rb",
-    "spec/fixtures/composites/example.ai",
-    "spec/fixtures/composites/example.eps",
-    "spec/fixtures/composites/example.pdf",
-    "spec/fixtures/composites/example.ps",
-    "spec/fixtures/composites/example.svg",
-    "spec/fixtures/images/example.gif",
-    "spec/fixtures/images/example.jpg",
-    "spec/fixtures/images/example.png",
-    "spec/fixtures/images/example.psd",
+    "spec/fixtures/.hidden/example.psd",
+    "spec/fixtures/empty-file",
+    "spec/fixtures/example.ai",
+    "spec/fixtures/example.eps",
+    "spec/fixtures/example.gif",
+    "spec/fixtures/example.jpg",
+    "spec/fixtures/example.pdf",
+    "spec/fixtures/example.png",
+    "spec/fixtures/example.ps",
+    "spec/fixtures/example.svg",
     "spec/spec_helper.rb"
   ]
   s.homepage = %q{http://github.com/dougalmacpherson/candle}
@@ -50,7 +51,6 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.7}
   s.summary = %q{Using OS X spotlight to retrieve file metadata}
   s.test_files = [
-    "spec/candle/images_spec.rb",
     "spec/candle_spec.rb",
     "spec/spec_helper.rb"
   ]
@@ -63,18 +63,18 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<rspec>, ["~> 2.1.0"])
       s.add_development_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.5.1"])
-      s.add_development_dependency(%q<rcov>, [">= 0"])
+      s.add_development_dependency(%q<rake-compiler>, [">= 0"])
     else
       s.add_dependency(%q<rspec>, ["~> 2.1.0"])
       s.add_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_dependency(%q<jeweler>, ["~> 1.5.1"])
-      s.add_dependency(%q<rcov>, [">= 0"])
+      s.add_dependency(%q<rake-compiler>, [">= 0"])
     end
   else
     s.add_dependency(%q<rspec>, ["~> 2.1.0"])
     s.add_dependency(%q<bundler>, ["~> 1.0.0"])
     s.add_dependency(%q<jeweler>, ["~> 1.5.1"])
-    s.add_dependency(%q<rcov>, [">= 0"])
+    s.add_dependency(%q<rake-compiler>, [">= 0"])
   end
 end
 
