@@ -8,7 +8,8 @@ GEM
       git (>= 1.2.5)
       rake
     rake (0.8.7)
-    rcov (0.9.9)
+    rake-compiler (0.7.1)
+      rake (>= 0.8.3, < 0.9)
     rspec (2.1.0)
       rspec-core (~> 2.1.0)
       rspec-expectations (~> 2.1.0)
@@ -24,5 +25,5 @@ PLATFORMS
 DEPENDENCIES
   bundler (~> 1.0.0)
   jeweler (~> 1.5.1)
-  rcov
+  rake-compiler
   rspec (~> 2.1.0)
