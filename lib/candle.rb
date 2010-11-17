@@ -28,6 +28,11 @@ module Candle
       raise "Writing metadata is not supported"
     end
     
+    
+    def indexed?
+      !!metadata['kMDItemContentTypeTree']
+    end
+    
     private
     
     # Does the 'actual' work and asks spotlight for the metadata
