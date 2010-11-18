@@ -170,7 +170,7 @@ VALUE method_attributes(VALUE self, VALUE path) {
 
 
 //	This is called first as the bundle is called 'candle'
-void Init_candle (void) {
+void Init_spotlight (void) {
 	
 	// Define a new module at the top level
 	VALUE Candle = rb_define_module("Candle");

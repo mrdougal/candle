@@ -15,4 +15,4 @@ have_header("CoreServices/CoreServices.h")
 
 # Creates a Makefile for our extension
 # If this method is not called, no Makefile is created.
-create_makefile('candle/candle')
+create_makefile('spotlight')
