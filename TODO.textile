@@ -1,50 +1,6 @@
 
-Trim of MD prefixes on all attributes returned from Spotlight.
-In general will be removing kMDItem and FS.
+2010-11-18
+BUG: On install the C extensions is copied to lib and not lib/candle
 
-Most FS attributes will be stripped on upload. The only exception I assume is FSSize. 
-FSInvisible and FSHasCustomIcon won't be relevant when it comes to display on the website.
-
-kMDItemContentCreationDate => content_creation_date
-kMDItemContentTypeTree => content_type_tree
-kMDItemKind => kind
-
-
-Have a definition of the type of file.
-This will be based off the kMDItemContentTypeTree value returned from Spotlight
-
-Within the C code
-
-Write a method to return a Hash of the attributes and their values
-
-item = Candle.new 'path/to/file.pdf'
-item.attributes => {
-	:title => 'file.pdf',
-	:type => 'Portable Document Format (PDF)',
-	:content_type => 'pdf',
-	:content_type_tree => ['composite-content','pdf'],
-	:creator => 'Adobe InDesign CS3 (5.0.4)',
-	:text_content => 'A newfangled day starts like any other, with a huge serve of battery hen eggs '
-}
-
-h2. Changing attributes names
-
-We will want to change the names of the attributes, so that they are more meaningful.
-Additionally so that they are ruby-like. (being underscore and separated by underscores)
-
-attribute_name.gsub('kMDItem','').gsub('FS','').underscore
-
-Will give us something like...
-kMDItemContentModificationDate => content_modification_date
-
-
-API
-
-asset = Asset.first # uploaded file
-asset.file # File information (Joint attachment proxy in our case)
-asset.file.metadata 'path/to/file'
-
-
-
-
-
+2010-11-19
+BUG: Strings returned are always ASCII. Causing issues when content contains UTF8 characters
