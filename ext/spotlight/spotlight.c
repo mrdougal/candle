@@ -72,7 +72,7 @@ static MDItemRef createMDItemFromPath(VALUE path) {
 	// If there is nothing returned from the request to find our MetaData object
 	if (!mdi) {
 		// Raise an error in Ruby
-		rb_raise(rb_eTypeError, "Could not find MDItem by given path");
+		rb_raise(rb_eTypeError, "Candle::Spotlight Could not find asset by given path");
 	}
 	
 	// return our MetaData object for processing
