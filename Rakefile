@@ -29,7 +29,7 @@ Jeweler::Tasks.new do |gem|
   gem.email = "hello@newfangled.com.au"
   gem.authors = ["Dougal MacPherson"]
 
-  # Dependencies managemd via bundler
+  # Development dependencies managed via bundler
   # see Gemfile for more information 
   
 end
@@ -51,10 +51,10 @@ RSpec::Core::RakeTask.new(:spec) do |spec|
   spec.pattern = FileList['spec/**/*_spec.rb']
 end
 
-RSpec::Core::RakeTask.new(:rcov) do |spec|
-  spec.pattern = 'spec/**/*_spec.rb'
-  spec.rcov = true
-end
+# RSpec::Core::RakeTask.new(:rcov) do |spec|
+#   spec.pattern = 'spec/**/*_spec.rb'
+#   spec.rcov = true
+# end
 
 task :default => :spec
 
