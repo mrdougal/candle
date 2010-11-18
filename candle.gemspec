@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.date = %q{2010-11-18}
   s.description = %q{A simple gem to retrieve metadata on files via Spotlight on OS X. In development}
   s.email = %q{hello@newfangled.com.au}
-  s.extensions = ["ext/candle/extconf.rb"]
+  s.extensions = ["ext/spotlight/extconf.rb"]
   s.extra_rdoc_files = [
     "LICENSE.txt",
     "README.textile"
@@ -28,9 +28,8 @@ Gem::Specification.new do |s|
     "TODO.textile",
     "VERSION",
     "candle.gemspec",
-    "ext/candle/candle.c",
-    "ext/candle/candle.o",
-    "ext/candle/extconf.rb",
+    "ext/spotlight/extconf.rb",
+    "ext/spotlight/spotlight.c",
     "lib/candle.rb",
     "lib/candle/base.rb",
     "spec/candle_spec.rb",
