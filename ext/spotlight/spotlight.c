@@ -1,4 +1,6 @@
 #include <ruby.h>
+#include <ruby/encoding.h>
+
 #include <CoreServices/CoreServices.h>
 
 
@@ -22,7 +24,7 @@ static VALUE cfstring2rbstr(CFStringRef str) {
 	// Pointer to store output
 	const char *result;
 	
-	// Set default value for retrun result to nil
+	// Set default value for return result to nil
 	VALUE rb_result = Qnil;
 	
 	
@@ -51,6 +53,11 @@ static VALUE cfstring2rbstr(CFStringRef str) {
 		
 		// Return a new ruby string 
 		rb_result = rb_str_new2(result);
+		
+		// Convert the encoding to UTF-8
+		int enc = rb_enc_find_index("UTF-8");
+		
+		rb_enc_associate_index(rb_result, enc);
 	}
 	RELEASE_IF_NOT_NULL(data)
 	return rb_result;
@@ -179,7 +186,7 @@ void Init_spotlight (void) {
 	// Which in this case is 'spotlight'
 	VALUE Spotlight = rb_define_module_under(Candle, "Spotlight");
 
-	// Defines a method in module
+	// Defines a method in a module
 	rb_define_module_function(Spotlight, "attributes", method_attributes, 1);
 
 }

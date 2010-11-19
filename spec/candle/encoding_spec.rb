@@ -22,7 +22,7 @@ describe "Assets with unicode characters in their metadata" do
     # it_should_behave_like 'common metadata'
     
     it "should have © in it's copyright notice" do
-      @item.metadata['kMDItemCopyright'].should == "©"
+      @item.metadata['kMDItemCopyright'].should =~ /©/
     end
     
   end

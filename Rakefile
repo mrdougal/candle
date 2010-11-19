@@ -19,7 +19,9 @@ require 'jeweler'
 
 Jeweler::Tasks.new do |gem|
 
-  # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
+  # gem is a Gem::Specification... 
+  # see http://www.rubygems.org/read/chapter/20 for additional settings
+  
   gem.name = "candle"
   gem.homepage = "http://github.com/dougalmacpherson/candle"
   gem.summary = %Q{Using OS X spotlight to retrieve file metadata}
