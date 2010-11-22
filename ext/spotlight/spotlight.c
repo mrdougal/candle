@@ -68,13 +68,15 @@ static VALUE cfstring2rbstr(CFStringRef str) {
 
 
 
-// Called from method_attributes 
+// This is where we ask Spotlight for the metadata
+// (called from method_attributes)
 static MDItemRef createMDItemFromPath(VALUE path) {
 	
-	// Need to convert the ruby string
+	// Need to convert the ruby string into a C string
+	// so that we can pass it to Spotlight
 	CFStringRef pathRef = rbstr2cfstring(path);
 	
-	// Create our MetaData object
+	// Create our MetaData object from Spotlight
 	MDItemRef mdi = MDItemCreate(kCFAllocatorDefault, pathRef);
 	
 	RELEASE_IF_NOT_NULL(pathRef);
@@ -91,7 +93,7 @@ static MDItemRef createMDItemFromPath(VALUE path) {
 }
 
 // Convert objects such as strings, array etc into their ruby equivalent
-// Method is passed a type identifier in Core Foundation. 
+// Method is passed a type identifier from Core Foundation which the result from Spotlight
 static VALUE convert2rb_type(CFTypeRef ref) {
 	
 	VALUE result = Qnil;
@@ -113,7 +115,7 @@ static VALUE convert2rb_type(CFTypeRef ref) {
 			result = cfstring2rbstr(ref);
 			
 			
-			// Detect for Date
+		// Detect for Date
 		} else if (CFGetTypeID(ref) == CFDateGetTypeID()) {
 			
 			// 978307200.0 == (January 1, 2001 00:00 GMT) - (January 1, 1970 00:00 UTC)
@@ -123,7 +125,7 @@ static VALUE convert2rb_type(CFTypeRef ref) {
 			result = rb_funcall(rb_cTime, rb_intern("at"), 1, rb_float_new(double_result));
 			
 			
-			// Detect for Array
+		// Detect for Array
 		} else if (CFGetTypeID(ref) == CFArrayGetTypeID()) {
 			
 			
@@ -134,6 +136,7 @@ static VALUE convert2rb_type(CFTypeRef ref) {
 			for (i = 0; i < CFArrayGetCount(ref); i++) {
 				
 				// Push our result onto the ruby array 
+				// once we've converted it to a ruby type
 				rb_ary_push(result, convert2rb_type(CFArrayGetValueAtIndex(ref, i)));
 			}
 			
@@ -195,7 +198,8 @@ static VALUE convert2rb_type(CFTypeRef ref) {
 
 
 
-// This defines the attributes method in ruby
+// This defines the attributes
+// which is what we will call from ruby
 VALUE method_attributes(VALUE self, VALUE path) {
 	
 	
@@ -238,6 +242,7 @@ VALUE method_attributes(VALUE self, VALUE path) {
 
 
 //	This is called first as the bundle is called 'candle'
+// We setup a class Spotlight contained within the Candle model
 void Init_spotlight (void) {
 	
 	// Define a new module at the top level
@@ -247,7 +252,9 @@ void Init_spotlight (void) {
 	// Which in this case is 'spotlight'
 	VALUE Spotlight = rb_define_module_under(Candle, "Spotlight");
 	
-	// Defines a method in a module
+	// Defines a method that can be called from Ruby
+	// In this case 'attributes' can be called which calls 
+	// 'method_attriubtes' in our C extension
 	rb_define_module_function(Spotlight, "attributes", method_attributes, 1);
 	
 }
