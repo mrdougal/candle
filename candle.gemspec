@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{candle}
-  s.version = "0.2.6"
+  s.version = "0.2.7"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Dougal MacPherson"]
-  s.date = %q{2010-11-19}
+  s.date = %q{2010-11-22}
   s.description = %q{A simple gem to retrieve metadata on files via Spotlight on OS X. In development}
   s.email = %q{hello@newfangled.com.au}
   s.extensions = ["ext/spotlight/extconf.rb"]
@@ -32,9 +32,11 @@ Gem::Specification.new do |s|
     "ext/spotlight/spotlight.c",
     "lib/candle.rb",
     "lib/candle/base.rb",
+    "spec/candle/assets_indexed_spec.rb",
+    "spec/candle/assets_unindexed_spec.rb",
     "spec/candle/encoding_spec.rb",
-    "spec/candle/indexed_items_spec.rb",
-    "spec/candle/unindexed_assets_spec.rb",
+    "spec/candle/numbers_spec.rb",
+    "spec/candle/string_spec.rb",
     "spec/fixtures/.hidden/example.psd",
     "spec/fixtures/empty-file",
     "spec/fixtures/example.ai",
@@ -54,9 +56,11 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.7}
   s.summary = %q{Using OS X spotlight to retrieve file metadata}
   s.test_files = [
+    "spec/candle/assets_indexed_spec.rb",
+    "spec/candle/assets_unindexed_spec.rb",
     "spec/candle/encoding_spec.rb",
-    "spec/candle/indexed_items_spec.rb",
-    "spec/candle/unindexed_assets_spec.rb",
+    "spec/candle/numbers_spec.rb",
+    "spec/candle/string_spec.rb",
     "spec/spec_helper.rb"
   ]
 
