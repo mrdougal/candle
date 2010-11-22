@@ -58,9 +58,12 @@ static VALUE cfstring2rbstr(CFStringRef str) {
 		int enc = rb_enc_find_index("UTF-8");
 		
 		rb_enc_associate_index(rb_result, enc);
+		
 	}
+	
 	RELEASE_IF_NOT_NULL(data)
 	return rb_result;
+	
 }
 
 
@@ -78,6 +81,7 @@ static MDItemRef createMDItemFromPath(VALUE path) {
 	
 	// If there is nothing returned from the request to find our MetaData object
 	if (!mdi) {
+		
 		// Raise an error in Ruby
 		rb_raise(rb_eTypeError, "Candle::Spotlight Could not find asset by given path");
 	}
@@ -86,50 +90,107 @@ static MDItemRef createMDItemFromPath(VALUE path) {
 	return mdi;
 }
 
-
+// Convert objects such as strings, array etc into their ruby equivalent
+// Method is passed a type identifier in Core Foundation. 
 static VALUE convert2rb_type(CFTypeRef ref) {
-
-  VALUE result = Qnil;
-
-  double double_result;
-  int int_result;
-  long long_result;
-  int i;
-
-  if (ref) {
-
-    if (CFGetTypeID(ref) == CFStringGetTypeID()) {
-      result = cfstring2rbstr(ref);
-
-    } else if (CFGetTypeID(ref) == CFDateGetTypeID()) {
 	
-      // 978307200.0 == (January 1, 2001 00:00 GMT) - (January 1, 1970 00:00 UTC)
-      // CFAbsoluteTime => January 1, 2001 00:00 GMT
-      // ruby Time => January 1, 1970 00:00 UTC
-      double_result = (double) CFDateGetAbsoluteTime(ref) + 978307200;
-      result = rb_funcall(rb_cTime, rb_intern("at"), 1, rb_float_new(double_result));
-
-    } else if (CFGetTypeID(ref) == CFArrayGetTypeID()) {
-
-      result = rb_ary_new();
-      for (i = 0; i < CFArrayGetCount(ref); i++) {
-        rb_ary_push(result, convert2rb_type(CFArrayGetValueAtIndex(ref, i)));
-      }
-    } else if (CFGetTypeID(ref) == CFNumberGetTypeID()) {
-
-      if (CFNumberIsFloatType(ref)) {
-
-        CFNumberGetValue(ref, CFNumberGetType(ref), &double_result);
-        result = rb_float_new(double_result);
-      } else {
-        CFNumberGetValue(ref, CFNumberGetType(ref), &long_result);
-        result = LONG2NUM(long_result);
-      }
-    }
-  }
-
-  return result;
-
+	VALUE result = Qnil;
+	
+	double double_result;
+	float float_result;
+	int int_result;
+	long long_result;
+	int i;
+	
+	if (ref) {
+		
+		// Detect what type of Reference was passed in
+		// then we will convert each variant into a Ruby object
+		
+		
+		// Detect for String
+		if (CFGetTypeID(ref) == CFStringGetTypeID()) {
+			result = cfstring2rbstr(ref);
+			
+			
+			// Detect for Date
+		} else if (CFGetTypeID(ref) == CFDateGetTypeID()) {
+			
+			// 978307200.0 == (January 1, 2001 00:00 GMT) - (January 1, 1970 00:00 UTC)
+			// CFAbsoluteTime => January 1, 2001 00:00 GMT
+			// ruby Time => January 1, 1970 00:00 UTC
+			double_result = (double) CFDateGetAbsoluteTime(ref) + 978307200;
+			result = rb_funcall(rb_cTime, rb_intern("at"), 1, rb_float_new(double_result));
+			
+			
+			// Detect for Array
+		} else if (CFGetTypeID(ref) == CFArrayGetTypeID()) {
+			
+			
+			// Create a ruby array
+			result = rb_ary_new();
+			
+			// Loop through our results from C
+			for (i = 0; i < CFArrayGetCount(ref); i++) {
+				
+				// Push our result onto the ruby array 
+				rb_ary_push(result, convert2rb_type(CFArrayGetValueAtIndex(ref, i)));
+			}
+			
+			// Detection for Number
+		} else if (CFGetTypeID(ref) == CFNumberGetTypeID()) {
+			
+			
+			// Detect for Float
+			if (CFNumberIsFloatType(ref)) {
+				
+				
+				// CFNumberGetValue
+				// Obtains the value of a CFNumber object cast to a specified type
+				//
+				// Types of numbers available and their codes
+				// 
+				// 	kCFNumberSInt8Type = 1,
+				// 	kCFNumberSInt16Type = 2,
+				// 	kCFNumberSInt32Type = 3,
+				// 	kCFNumberSInt64Type = 4,
+				// 	kCFNumberFloat32Type = 5,
+				// 	kCFNumberFloat64Type = 6,
+				// 	kCFNumberCharType = 7,
+				// 	kCFNumberShortType = 8,
+				// 	kCFNumberIntType = 9,
+				// 	kCFNumberLongType = 10,
+				// 	kCFNumberLongLongType = 11,
+				// 	kCFNumberFloatType = 12,
+				// 	kCFNumberDoubleType = 13,
+				// 	kCFNumberCFIndexType = 14,
+				// 	kCFNumberNSIntegerType = 15,
+				// 	kCFNumberCGFloatType = 16,
+				// 	kCFNumberMaxType = 16
+				
+				// CFNumberGetType
+				// Returns the type used by a CFNumber object to store its value.
+				
+				
+				// Get the value of the number (based on how it is stored)
+				// with the result being stored 'double_result'
+				CFNumberGetValue(ref, CFNumberGetType(ref), &float_result);
+				
+				result = rb_float_new(float_result);
+				
+				// Number isn't a Float so we'll return a 'Long' 
+			} else {
+				
+				
+				CFNumberGetValue(ref, CFNumberGetType(ref), &long_result);
+				result = INT2NUM(long_result);
+				
+			}
+		}
+	}
+	
+	return result;
+	
 }
 
 
@@ -185,8 +246,8 @@ void Init_spotlight (void) {
 	// Define a nested class under the supplied class or module
 	// Which in this case is 'spotlight'
 	VALUE Spotlight = rb_define_module_under(Candle, "Spotlight");
-
+	
 	// Defines a method in a module
 	rb_define_module_function(Spotlight, "attributes", method_attributes, 1);
-
+	
 }
