@@ -1,6 +1,3 @@
 
 2010-11-18
 BUG: On install the C extensions is copied to lib and not lib/candle
-
-2010-11-19
-BUG: Strings returned are always ASCII. Causing issues when content contains UTF8 characters
