@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 module Candle
   
   class Base
@@ -35,6 +37,7 @@ module Candle
   
     # Does the 'actual' work and asks spotlight for the metadata
     def get_raw_metadata
+      
       Candle::Spotlight.attributes @path
     end
 
