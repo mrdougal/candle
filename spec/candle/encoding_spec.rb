@@ -42,13 +42,17 @@ describe "Assets with unicode characters in their filename" do
     
     
     it "should return a utf-8 string" do
+
       @item.metadata.keys.each do |k|
-        @item.metadata[k].encoding.name.should == "UTF-8" if @item.metadata[k].is_a?(String)
+        
+        val = @item.metadata[k]
+        val.encoding.name.should == "UTF-8" if val.is_a?(String)
       end
+
     end
     
     it "should have éxample in it's name" do
-      @item.metadata['kMDItemDisplayName'].should == "éxample.txt"
+      @item.metadata['kMDItemDisplayName'].should == 'éxample.txt'
     end
     
   end

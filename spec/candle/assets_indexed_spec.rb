@@ -67,7 +67,6 @@ describe "Composite assets" do
     
   end
   
-  
 
   describe "EPS" do
     
@@ -156,7 +155,8 @@ describe "Composite assets" do
 
   end
   
-  describe "SVG Image" do
+  
+  describe "PNG Image" do
     
     before(:each) do
 
