@@ -38,9 +38,23 @@ module Candle
     # Does the 'actual' work and asks spotlight for the metadata
     def get_raw_metadata
       
-      Candle::Spotlight.attributes @path
-    end
+      md = Candle::Spotlight.attributes @path
+      
+      
+      # Convert all of the strings in the hash to utf-8
+      md.each_pair do |key, value|
+        
+        next unless value.respond_to?(:encode)
 
+        # puts "Converting #{value}
+        md[key] = value.force_encoding("utf-8")
+        
+      end
+      
+      md
+      
+    end
+    
   end
 
 end

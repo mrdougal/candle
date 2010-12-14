@@ -19,19 +19,19 @@ describe "Numbers in assets" do
       @item = Candle::Base.new(@file.path)
     end
     
-    it "should have 2 pages" do
+    it "should have 2 pages (Fixnum)" do
       @item.metadata['kMDItemNumberOfPages'].should == 2
     end
     
-    it "should have a page height of ~283" do
+    it "should have a page height of ~283 (Float)" do
       @item.metadata['kMDItemPageHeight'].should be_within(10).of(280)
     end
 
-    it "should have a page width of ~425" do
+    it "should have a page width of ~425 (Float)" do
       @item.metadata['kMDItemPageWidth'].should be_within(10).of(425)
     end
     
-    it "should be ~250k in size" do
+    it "should be ~250k in size (Fixnum)" do
       @item.metadata['kMDItemFSSize'].should be_within(1000).of(250000)
     end
 
@@ -53,5 +53,19 @@ describe "Numbers in assets" do
     
   end
   
+  describe "Video" do
+    before(:each) do
+
+      file_path = File.expand_path(File.dirname(__FILE__) + "/../fixtures/example.mov")
+
+      @file = File.open file_path
+      @item = Candle::Base.new(@file.path)
+    end
+    
+    it "should say it's duration is ~3.5 seconds (Float)" do
+      @item.metadata['kMDItemDurationSeconds'].should be_within(0.1).of(3.5)
+    end
+    
+  end
   
 end

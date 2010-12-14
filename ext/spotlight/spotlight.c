@@ -179,8 +179,13 @@ static VALUE convert2rb_type(CFTypeRef ref) {
 				// with the result being stored 'double_result'
 				CFNumberGetValue(ref, CFNumberGetType(ref), &float_result);
 				
-				result = rb_float_new(float_result);
+				// fprintf(ref, "%s\n", );
 				
+				result = rb_float_new(float_result);
+
+				// printf("ref= %f\n", result);
+
+				// result = rb_float_new(ref);
 				// Number isn't a Float so we'll return a 'Long' 
 			} else {
 				
