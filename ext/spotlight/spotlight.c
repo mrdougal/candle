@@ -98,6 +98,8 @@ static VALUE convert2rb_type(CFTypeRef ref) {
 	
 	VALUE result = Qnil;
 	
+	int number_type;
+	
 	double double_result;
 	float float_result;
 	int int_result;
@@ -177,15 +179,26 @@ static VALUE convert2rb_type(CFTypeRef ref) {
 				
 				// Get the value of the number (based on how it is stored)
 				// with the result being stored 'double_result'
-				CFNumberGetValue(ref, CFNumberGetType(ref), &float_result);
 				
-				// fprintf(ref, "%s\n", );
+				
+				number_type = CFNumberGetType(ref);
+				
+				if(number_type == 6)
+				{
+					// There is an issue with creating 64 bit floats in ruby
+					// so we'll only make 32 bit float numbers
+					// 2010-12-27
+					// This doesn't feel like the right thing to do but it's working
+					
+					number_type = 5;
+				}
+
+				
+				
+				CFNumberGetValue(ref, number_type, &float_result);
 				
 				result = rb_float_new(float_result);
 
-				// printf("ref= %f\n", result);
-
-				// result = rb_float_new(ref);
 				// Number isn't a Float so we'll return a 'Long' 
 			} else {
 				
