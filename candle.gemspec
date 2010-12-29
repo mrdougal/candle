@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{candle}
-  s.version = "0.2.9"
+  s.version = "0.2.10"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Dougal MacPherson"]
-  s.date = %q{2010-12-27}
+  s.date = %q{2010-12-29}
   s.description = %q{A simple gem to retrieve metadata on files via Spotlight on OS X. In development}
   s.email = %q{hello@newfangled.com.au}
   s.extensions = ["ext/spotlight/extconf.rb"]
@@ -49,6 +49,9 @@ Gem::Specification.new do |s|
     "spec/fixtures/example.ps",
     "spec/fixtures/example.svg",
     "spec/fixtures/éxample.txt",
+    "spec/fixtures/iWork/example.key",
+    "spec/fixtures/iWork/example.numbers",
+    "spec/fixtures/iWork/example.pages",
     "spec/fixtures/wingdings.ttf",
     "spec/spec_helper.rb"
   ]
