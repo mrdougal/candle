@@ -76,6 +76,15 @@ returns a hash of attributes (and that's about it)
 
 
 
+Using cocoa bridge
+
+require 'osx/cocoa'
+OSX.require_framework 'CoreData'
+
+# To load the coredata framework
+
+
+
 
 h2. Note on Patches/Pull Requests
  

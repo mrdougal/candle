@@ -212,5 +212,6 @@ describe "Composite assets" do
     
   end
   
+ 
 
 end
