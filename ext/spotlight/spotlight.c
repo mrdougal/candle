@@ -10,13 +10,12 @@
 
 
 
-
 // Convert a ruby string into a c string
 static CFStringRef rbstr2cfstring(VALUE str) {
+	
 	return CFStringCreateWithCString(kCFAllocatorDefault, StringValuePtr(str), kCFStringEncodingUTF8);
+	
 }
-
-
 
 // Convert a c string into a ruby string
 static VALUE cfstring2rbstr(CFStringRef str) {
@@ -51,46 +50,25 @@ static VALUE cfstring2rbstr(CFStringRef str) {
 		//		
 		result = (const char *)CFDataGetBytePtr(data);
 		
-		// Return a new ruby string 
-		rb_result = rb_str_new2(result);
-		
-		// Convert the encoding to UTF-8
-		int enc = rb_enc_find_index("UTF-8");
-		
-		rb_enc_associate_index(rb_result, enc);
-		
+		if(result) {
+
+			// Return a new ruby string 
+			rb_result = rb_str_new2(result);
+
+			// Convert the encoding to UTF-8
+			int enc = rb_enc_find_index("UTF-8");
+
+			rb_enc_associate_index(rb_result, enc);
+
+		}
 	}
+	
 	
 	RELEASE_IF_NOT_NULL(data)
 	return rb_result;
 	
 }
 
-
-
-// This is where we ask Spotlight for the metadata
-// (called from method_attributes)
-static MDItemRef createMDItemFromPath(VALUE path) {
-	
-	// Need to convert the ruby string into a C string
-	// so that we can pass it to Spotlight
-	CFStringRef pathRef = rbstr2cfstring(path);
-	
-	// Create our MetaData object from Spotlight
-	MDItemRef mdi = MDItemCreate(kCFAllocatorDefault, pathRef);
-	
-	RELEASE_IF_NOT_NULL(pathRef);
-	
-	// If there is nothing returned from the request to find our MetaData object
-	if (!mdi) {
-		
-		// Raise an error in Ruby
-		rb_raise(rb_eTypeError, "Candle::Spotlight Could not find asset by given path");
-	}
-	
-	// return our MetaData object for processing
-	return mdi;
-}
 
 // Convert objects such as strings, array etc into their ruby equivalent
 // Method is passed a type identifier from Core Foundation which the result from Spotlight
@@ -194,15 +172,14 @@ static VALUE convert2rb_type(CFTypeRef ref) {
 				}
 
 				
-				
 				CFNumberGetValue(ref, number_type, &float_result);
 				
 				result = rb_float_new(float_result);
 
-				// Number isn't a Float so we'll return a 'Long' 
 			} else {
 				
-				
+				// Number isn't a Float so we'll return a 'Long' 
+
 				CFNumberGetValue(ref, CFNumberGetType(ref), &long_result);
 				result = INT2NUM(long_result);
 				
@@ -216,46 +193,86 @@ static VALUE convert2rb_type(CFTypeRef ref) {
 
 
 
-// This defines the attributes
-// which is what we will call from ruby
-VALUE method_attributes(VALUE self, VALUE path) {
+
+
+// This is where we ask Spotlight for the metadata
+// (called from method_attributes)
+static MDItemRef get_metadata_from_path(VALUE path) {
 	
 	
-	int i;
+	// Need to convert the ruby string into a C string that we can pass to Spotlight
+	CFStringRef pathRef = rbstr2cfstring(path);
 	
-	CFStringRef attrNameRef;
-	CFTypeRef attrValueRef;
+	// Create our MetaData object from Spotlight
+	MDItemRef inspectedRef = MDItemCreate(kCFAllocatorDefault, pathRef);
 	
-	// Get a MetaData object from our path
-	MDItemRef mdi = createMDItemFromPath(path);
+	RELEASE_IF_NOT_NULL(pathRef);
 	
-	// Get an array of the attribute names
-	CFArrayRef attrNamesRef = MDItemCopyAttributeNames(mdi);
 	
-	// Create a ruby hash to store our MetaData information
-	// and ultimately send back to Ruby
-	VALUE result = rb_hash_new();
-	
-	// Cycle through the attributes and populate our results hash
-	for (i = 0; i < CFArrayGetCount(attrNamesRef); i++) {
+	if(!inspectedRef) {
 		
-		// Building our name value pairs
-		attrNameRef = CFArrayGetValueAtIndex(attrNamesRef, i);
-		attrValueRef = MDItemCopyAttribute(mdi, attrNameRef);
-		
-		// Set key value pair in the ruby hash
-		// Note that we need to convert the C strings back into ruby strings
-		rb_hash_aset(result, cfstring2rbstr(attrNameRef), convert2rb_type(attrValueRef));
-		
-		
-		RELEASE_IF_NOT_NULL(attrValueRef);
+		// Raise an error in Ruby saying that we could find the asset
+		rb_raise(rb_eTypeError, "Candle::Spotlight Could not find asset by given path");
 	}
 	
-	RELEASE_IF_NOT_NULL(mdi);
-	RELEASE_IF_NOT_NULL(attrNamesRef);
+	return inspectedRef;
 	
-	return result;
 }
+
+
+
+// Retrieves metadata from the file
+// This is called from ruby
+VALUE get_metadata(VALUE self, VALUE path) {
+	
+
+	int i;
+
+    CFArrayRef       inspectedRefAttributeNames;
+    CFDictionaryRef  inspectedRefAttributeValues;
+
+	CFStringRef      attributeName;
+	CFDictionaryRef  attributeValue;
+    
+
+
+	// Retrieve a Metadata object from the path
+	// Will raise an error if is unable to ready the file
+	MDItemRef inspectedRef = get_metadata_from_path(path);
+	
+	
+	// Extract values from the metadata object
+	inspectedRefAttributeNames = MDItemCopyAttributeNames(inspectedRef);
+    inspectedRefAttributeValues = MDItemCopyAttributes(inspectedRef,inspectedRefAttributeNames);;
+    
+  
+	// Ruby hash to store our results and ultimately return back to ruby
+	VALUE result = rb_hash_new();
+	
+	
+	for(i = 0; i < CFArrayGetCount(inspectedRefAttributeNames); ++i) {
+
+		// Extract our key value pair
+	    attributeName = CFArrayGetValueAtIndex(inspectedRefAttributeNames,i);
+		attributeValue = CFDictionaryGetValue(inspectedRefAttributeValues,attributeName); 
+
+
+		// Assign key and values to our ruby hash (result)
+		rb_hash_aset(result, cfstring2rbstr(attributeName), convert2rb_type(attributeValue));
+			
+	    // RELEASE_IF_NOT_NULL(attributeValue);
+	
+	}
+	
+	RELEASE_IF_NOT_NULL(inspectedRef);
+	RELEASE_IF_NOT_NULL(inspectedRefAttributeNames);
+	RELEASE_IF_NOT_NULL(inspectedRefAttributeValues);
+	
+
+	return result;
+	
+}
+
 
 
 
@@ -273,6 +290,6 @@ void Init_spotlight (void) {
 	// Defines a method that can be called from Ruby
 	// In this case 'attributes' can be called which calls 
 	// 'method_attriubtes' in our C extension
-	rb_define_module_function(Spotlight, "attributes", method_attributes, 1);
+	rb_define_module_function(Spotlight, "attributes", get_metadata, 1);
 	
 }
