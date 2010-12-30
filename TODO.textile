@@ -2,7 +2,3 @@
 2010-11-18
 BUG: On install the C extensions is copied to lib and not lib/candle
 
-
-
-2010-11-24
-Filenames with multibytes characters in their names are failing
