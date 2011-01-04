@@ -27,7 +27,7 @@ describe "empty files" do
   
   before(:each) do
 
-    file_path = File.expand_path(File.dirname(__FILE__) + "/../fixtures/empty-file")
+    file_path = File.expand_path(File.dirname(__FILE__) + "/../fixtures/.hidden/empty-file")
 
     @file = File.open file_path
     @item = Candle::Base.new(@file.path)

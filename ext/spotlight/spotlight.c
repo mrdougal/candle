@@ -39,14 +39,13 @@ static VALUE cfstring2rbstr(CFStringRef str) {
 	CFDataRef data = CFStringCreateExternalRepresentation(kCFAllocatorDefault, str, kCFStringEncodingUTF8, 0);
 	
 	// Assuming we get something back...
+	// If the passed in string can't be converted to UTF-8 it will return NULL
 	if (data) {
 		
 		
 		//		Returns a read-only pointer to the bytes of a CFData object.
 		//		
-		//		const UInt8 * CFDataGetBytePtr (
-		//										CFDataRef theData
-		//										);
+		//		const UInt8 * CFDataGetBytePtr (CFDataRef theData);
 		//		
 		result = (const char *)CFDataGetBytePtr(data);
 		

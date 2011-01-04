@@ -17,7 +17,8 @@ module Candle
   
     # Returns a hash of attributes from Spotlight
     def metadata
-      @metadata ||= get_raw_metadata
+      # @metadata ||= 
+      get_raw_metadata
     end
   
     # Raise an exception if an attempt to write metadata was made
@@ -46,14 +47,34 @@ module Candle
         
         next unless value.respond_to?(:encode)
 
-        # puts "Converting #{value}
-        md[key] = value.force_encoding("utf-8")
+        
+        # We need to force the encoding of the string
+        # even though we should have utf8 strings returned via Spotlight
+        utf8_str = value.force_encoding("utf-8")
+        
+
+        # Unfortunately rubys string method "valid_encoding?" doesn't raise 
+        # doesn't pick up on invalid byte_sequences
+        # 
+        # Therefore the encoding may still be off
+         # so we'll convert again but replace the invalid chars
+        utf8_str.encode!("utf-8", :undef => :replace, 
+                                  :invalid => :replace, 
+                                  :replace => "x" ) 
+                                  
+          
+        # end
+        
+        
+        md[key] = utf8_str
         
       end
       
       md
       
     end
+    
+    
     
   end
 
